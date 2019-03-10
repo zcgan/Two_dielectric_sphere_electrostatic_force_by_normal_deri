@@ -16,7 +16,7 @@
 data=load('data.dat');
 %load the collocation pts locations, normal derivative value, and weights from the data file
 grid_loc=data(:,2:4);
-normal_dev=data(:,9);
+normal_dev=data(:,8);
 weights=data(:,10);
 
 %load the source/dielectric object information
