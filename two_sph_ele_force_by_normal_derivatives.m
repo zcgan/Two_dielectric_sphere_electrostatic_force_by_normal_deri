@@ -15,11 +15,11 @@
 
 data=load('data.dat');
 %load the collocation pts locations, normal derivative value, and weights from the data file
-grid_loc=data(:,2:4); 
-normal_dev=data(:,8); %the surface phi norm derv
-weights=data(:,10); 
+grid_loc=data(:,2:4); %same as tr_xyz(1:3,i) in tabi
+normal_dev=data(:,8); %same as xvct(i), the surface phi norm derv
+weights=data(:,10); %same as tr_area(i) in tabi
 
-normal_dev=normal_dev/4/pi; %rescale the unit of normal_dev
+normal_dev=normal_dev/4/pi; %rescale the unit of weights
 
 %load the source/dielectric object information
 sourcedata=load('source.dat');
@@ -54,9 +54,9 @@ for i=1:2 %two bodies
             dz=src_loc(i,3)-src_loc(j,3);
             dr=sqrt(dx*dx+dy*dy+dz*dz);
             
-            Fx(i)=Fx(i)+src_char(i)*src_char(j)*dx/eps_i/dr/dr/dr;
-            Fy(i)=Fy(i)+src_char(i)*src_char(j)*dy/eps_i/dr/dr/dr;
-            Fz(i)=Fz(i)+src_char(i)*src_char(j)*dz/eps_i/dr/dr/dr;
+            Fx(i)=Fx(i)+src_char(i)*src_char(j)*dx/eps_i/eps_i/dr/dr/dr;
+            Fy(i)=Fy(i)+src_char(i)*src_char(j)*dy/eps_i/eps_i/dr/dr/dr;
+            Fz(i)=Fz(i)+src_char(i)*src_char(j)*dz/eps_i/eps_i/dr/dr/dr;
         end
     end
 end
@@ -73,9 +73,9 @@ for i=1:2 %two bodies
             dz=src_loc(i,3)-grid_loc(k,3);
             dr=sqrt(dx*dx+dy*dy+dz*dz);
             
-            Fx(i)=Fx(i)+src_char(i)*sigma_b(k)*weights(k)*dx/dr/dr/dr;
-            Fy(i)=Fy(i)+src_char(i)*sigma_b(k)*weights(k)*dy/dr/dr/dr;
-            Fz(i)=Fz(i)+src_char(i)*sigma_b(k)*weights(k)*dz/dr/dr/dr;
+            Fx(i)=Fx(i)+src_char(i)*sigma_b(k)*weights(k)*dx/eps_i/dr/dr/dr;
+            Fy(i)=Fy(i)+src_char(i)*sigma_b(k)*weights(k)*dy/eps_i/dr/dr/dr;
+            Fz(i)=Fz(i)+src_char(i)*sigma_b(k)*weights(k)*dz/eps_i/dr/dr/dr;
             end
         end
     end
